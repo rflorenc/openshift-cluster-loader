@@ -1,0 +1,106 @@
+{
+    "apiVersion": "v1",
+    "kind": "Template",
+    "metadata": {
+        "name": "stress-memtest-template"
+    },
+    "objects": [
+        {
+            "apiVersion": "v1",
+            "data": {
+                "ocp_stress.cfg": "${INITIAL_FLAGS}"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+                "name": "stress-config"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "name": "stress-memtest",
+                "labels": {
+                    "run": "stress-memtest",
+                    "test": "stress-memtest"
+                }
+            },
+            "spec": {
+                "replicas": "${{REPLICAS}}",
+                "template": {
+                    "metadata": {
+                        "generateName": "stress-memtest-",
+                        "labels": {
+                            "run": "stress-memtest",
+                            "test": "stress-memtest"
+                        }
+                    },
+                    "spec": {
+                        "nodeSelector": {
+                           "placement": "${PLACEMENT}"
+                        },
+                        "containers": [
+                            {
+                                "env": [
+                                ],
+                                "image": "${MEMTEST_IMAGE}",
+                                "imagePullPolicy": "Always",
+                                "name": "stress-memtest",
+                                "command": ["stress-ng", "--vm", "2", "--vm-bytes", "1G", "--mmap", "2", "--mmap-bytes", "1G"],
+                                "resources": {},
+                                "volumeMounts": [
+                                    {
+                                        "name": "config",
+                                        "mountPath": "/var/lib/svt"
+                                    }
+                                ],
+                                "terminationMessagePath": "/dev/termination-log"
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "name": "config",
+                                "configMap": {
+                                    "name": "stress-config"
+                                }
+                            }
+                        ],
+                        "imagePullSecrets": [
+                            {
+                                "name": "default-dockercfg-ukomu"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "name": "MEMTEST_IMAGE",
+            "displayName": "stress image",
+            "value": "docker.io/lorel/docker-stress-ng:latest"
+        },
+	{
+	    "name": "INITIAL_FLAGS",
+	    "description": "The initial flags to pass to stress",
+	    "value": ""
+	},
+        {
+            "name": "IDENTIFIER",
+            "displayName": "identifier",
+            "value": "1"
+        },
+        {
+            "name": "REPLICAS",
+            "displayName": "Replicas",
+            "value": "1"
+        },
+        {
+            "name": "PLACEMENT",
+            "displayName": "Placement",
+            "value": "stress"
+        }
+    ]
+}
+
