@@ -1,0 +1,21 @@
+projects:
+  - num: 1
+    basename: disktest
+    ifexists: delete
+    tuning: default
+    templates:
+      - num: 1
+        file: ./content/diskpressure.json
+        parameters:
+         - REPLICAS: "1"
+         - INITIAL_FLAGS: ""
+
+tuningsets:
+  - name: default
+    pods:
+      stepping:
+        stepsize: 5
+        pause: 0 min
+      rate_limit:
+        delay: 0 ms
+

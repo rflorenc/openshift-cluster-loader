@@ -1,0 +1,20 @@
+projects:
+  - num: 2
+    basename: logtest
+    ifexists: delete
+    tuning: default
+    templates:
+      - num: 1
+        file: ./content/logpressure.json
+        parameters:
+         - REPLICAS: "1"
+         - INITIAL_FLAGS: "--num-lines 10 --line-length 1024 --word-length 9 --rate 1200 --fixed-line\n"
+
+tuningsets:
+  - name: default
+    pods:
+      stepping:
+        stepsize: 5
+        pause: 0 min
+      rate_limit:
+        delay: 0 ms
