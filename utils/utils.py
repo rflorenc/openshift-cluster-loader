@@ -25,9 +25,6 @@ def cli_parser():
   cliparser.add_argument("--kubeconfig", dest="kubeconfig",
                       default=os.path.expanduser("~") + "/.kube/config",
                       help="Location of the default kubeconfig to use")
-  cliparser.add_argument("-p", "--processes", dest="processes",
-                      default="10",
-                      help="The maximum number of concurrent processes used to create projects")
   cliparser.add_argument("-v", "--debug",
                       action="store_true", dest="debug", default=False,
                       help="Prints more detailed info to help debug an issue.")
