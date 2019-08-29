@@ -1,0 +1,116 @@
+{
+    "apiVersion": "v1",
+    "kind": "Template",
+    "metadata": {
+        "name": "fallocate-disktest-template"
+    },
+    "objects": [
+        {
+            "apiVersion":"v1",
+            "kind": "ServiceAccount",
+            "metadata":{
+                "name": "fallocate-sa"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "data": {
+                "ocp_fallocate.cfg": "${INITIAL_FLAGS}"
+            },
+            "kind": "ConfigMap",
+            "metadata": {
+                "name": "fallocate-config"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "ReplicationController",
+            "metadata": {
+                "name": "fallocate-disktest",
+                "labels": {
+                    "run": "fallocate-disktest",
+                    "test": "fallocate-disktest"
+                }
+            },
+            "spec": {
+                "replicas": "${{REPLICAS}}",
+                "template": {
+                    "metadata": {
+                        "generateName": "fallocate-disktest-",
+                        "labels": {
+                            "run": "fallocate-disktest",
+                            "test": "fallocate-disktest"
+                        }
+                    },
+                    "spec": {
+                        "nodeSelector": {
+                           "placement": "${PLACEMENT}"
+                        },
+                        "containers": [
+                            {
+                                "env": [
+                                ],
+                                "image": "${disktest_IMAGE}",
+                                "imagePullPolicy": "Always",
+                                "name": "fallocate-disktest",
+                                "command": ["fallocate", "-l", "1G", "/var/big${RANDOM}"],
+                                "resources": {},
+                                "volumeMounts": [
+                                    {
+                                        "name": "config",
+                                        "mountPath": "/var/lib/svt"
+                                    }
+                                ],
+                                "terminationMessagePath": "/dev/termination-log"
+                            }
+                        ],
+                        "securityContext": {
+                          "privileged": "true"
+                        },
+                        "volumes": [
+                            {
+                                "name": "config",
+                                "configMap": {
+                                    "name": "fallocate-config"
+                                }
+                            }
+                        ],
+                        "imagePullSecrets": [
+                            {
+                                "name": "default-dockercfg-ukomu"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "name": "disktest_IMAGE",
+            "displayName": "fallocate image",
+            "value": "docker.io/library/busybox:latest"
+        },
+        {
+            "name": "INITIAL_FLAGS",
+            "description": "The initial flags to pass to fallocate",
+            "value": ""
+        },
+        {
+            "name": "IDENTIFIER",
+            "displayName": "identifier",
+            "value": "1"
+        },
+        {
+            "name": "REPLICAS",
+            "displayName": "Replicas",
+            "value": "1"
+        },
+        {
+            "name": "PLACEMENT",
+            "displayName": "Placement",
+            "value": "fallocate"
+        }
+    ]
+}
+
