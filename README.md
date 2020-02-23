@@ -11,7 +11,7 @@ e.g.: `logger`, `stress`, `fallocate`, `curl`, `dd`, `jmeter`.
 
 ### Log in to OCP
 ```
-oc login https://openshift-master.ose1.helvetia-devl.io --token=${token}
+oc login https://openshift-master.ose1.org1-devl.io --token=${token}
 ```
 
 ### Label your target node(s)
