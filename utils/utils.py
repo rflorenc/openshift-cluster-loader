@@ -4,8 +4,7 @@ from argparse import ArgumentParser
 import subprocess, time, sys, os, yaml
 from datetime import datetime
 from multiprocessing import Process
-from log import *
-import ConfigParser
+from six.moves import configparser as ConfigParser
 
 
 def cli_parser():
