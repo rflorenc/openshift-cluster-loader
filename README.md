@@ -23,6 +23,6 @@ oc label node ip-yy-yyy-yyy-yyy.eu-central-1.compute.internal placement=logtest
 ### Sample run
 
 ```
- $ python cluster-loader.py -f config/ocp-logtest.yaml
+ $ python2 cluster-loader.py -f config/ocp-logtest.yaml
 
 ```
