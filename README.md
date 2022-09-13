@@ -9,6 +9,12 @@ e.g.: `logger`, `stress`, `fallocate`, `curl`, `dd`, `jmeter`.
 
 ## Steps
 
+###
+```
+python -m pip install -r requirements.txt --user
+```
+###
+
 ### Log in to OCP
 ```
 oc login https://openshift-master.ose1.org1-devl.io --token=${token}
@@ -23,6 +29,6 @@ oc label node ip-yy-yyy-yyy-yyy.eu-central-1.compute.internal placement=logtest
 ### Sample run
 
 ```
- $ python2 cluster-loader.py -f config/ocp-logtest.yaml
+$ python cluster-loader.py -f config/ocp-logtest.yaml
 
 ```

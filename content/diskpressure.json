@@ -89,7 +89,7 @@
         {
             "name": "disktest_IMAGE",
             "displayName": "fallocate image",
-            "value": "docker.io/library/busybox:latest"
+            "value": "quay.io/rlourencc/ocptools/busybox:v1"
         },
         {
             "name": "INITIAL_FLAGS",

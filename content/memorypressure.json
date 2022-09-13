@@ -79,7 +79,7 @@
         {
             "name": "MEMTEST_IMAGE",
             "displayName": "stress image",
-            "value": "docker.io/lorel/docker-stress-ng:latest"
+            "value": "quay.io/rlourencc/ocptools/docker-stress-ng:v1"
         },
 	{
 	    "name": "INITIAL_FLAGS",
